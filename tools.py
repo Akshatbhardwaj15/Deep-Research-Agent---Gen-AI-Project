@@ -12,7 +12,27 @@ tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 @tool
 def web_search(query: str) -> str:
     """Search the web for information on a topic. Returns Titles, URLs and Snippets"""
-    response = tavily.search(query=query, max_results = 5)
-    return response
+    results = tavily.search(query=query, max_results = 5)
+    
+    out = []
 
-print(web_search.invoke("what are the recent news about war."))
+    for r in results['results']:
+        out.append(
+            f"Title: {r['title']}\n URL: {r['url']}\n Snippet: {r['content'][:300]}\n"
+        )
+
+        return "\n---\n".join(out)
+
+@tool
+def scrape_url(url : str) -> str:
+    """Scrape and retunr clean text content from a given URL for deeper reading. """
+    try:
+        resp = requests.get(url, timeout=8, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for tag in soup(["script", "style", "nav", "footer"]):
+            tag.decompose()
+        return soup.get_text(separator=" ", strip=True)[:3000]
+    except Exception as e:
+        return f"Could not scrape URL: {str(e)}"
+
+# print(scrape_url.invoke({"url": "https://www.hindustantimes.com/india-news/trump-modi-have-good-working-relations-will-work-it-out-peter-navarro-amid-100-tarrif-threat-101786466009382.html"}))
