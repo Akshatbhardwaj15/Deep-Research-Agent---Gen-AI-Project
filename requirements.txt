@@ -1,0 +1,35 @@
+# Core LangChain
+langchain
+langchain-google-genai
+langchain-tavily
+langchain-community
+langgraph
+tavily-python
+
+# Web scraping
+beautifulsoup4
+requests
+
+# Data handling
+pandas
+
+# Token counting / text utilities
+tiktoken
+
+# Logging / debugging
+rich
+
+# Retry / robustness
+tenacity
+
+# Fast JSON handling
+orjson
+
+# Typing / validation
+pydantic
+
+# HTML parsing / cleanup
+html5lib
+
+# Environment variables
+python-dotenv
